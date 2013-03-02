@@ -5,7 +5,8 @@ http.createServer(function(req, res){
 	//var result = longlongProcess();
 	//counter++;
 	res.writeHead(200, {"Content-Type": "text/html"});
-	res.write((counter++).toString());
+	counter-=2;
+	res.write(counter.toString());
 	console.log(counter);
 	res.end();
 }).listen(port);
