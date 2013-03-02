@@ -3,9 +3,9 @@ var counter = 0;
 var port = process.env.PORT || 8888;
 http.createServer(function(req, res){
 	//var result = longlongProcess();
-	//counter++;
+	counter++;
 	res.writeHead(200, {"Content-Type": "text/html"});
-	counter-=2;
+	counter=counter-2;
 	res.write(counter.toString());
 	console.log(counter);
 	res.end();
