@@ -1,24 +1,50 @@
-var http = require("http");
-var counter = 0;
+var express = require("express");
+var fs = require("fs");
+var app = express.createServer();
+
 var port = process.env.PORT || 8888;
-http.createServer(function(req, res){
-	
-	counter=counter+1;
-	res.writeHead(200, {"Content-Type": "text/html"});
-	if (counter > 1)
+app.get("/", function(req, res) {
+  fs.readFile("index.html", function (err, data) {
+    if (err) {
+      res.contentType("html");
+      res.send("File not found");
+      }
+    else{ 
+      res.contentType("html");
+      res.send(data);
+    }
+  });      
+});
+
+app.get("/myaction", function(req, res) {
+  var phrase = req.param("phrase");
+  var orig = phrase;
+  var optionsArray = new Array();
+  for( var k = 0; k < 27; k++)
+  {
+  for( var i = 0; i < phrase.length; i++)
 	{
-		res.write((counter-1).toString());
-		console.log(counter-1);
+	if((90>=phrase.charCodeAt(i) && phrase.charCodeAt(i)>=65)|| (122>=phrase.charCodeAt(i) && phrase.charCodeAt(i)>=97)) {
+		var thing = String.fromCharCode(parseInt(phrase.charCodeAt(i))+k);
+		if (thing.charCodeAt(0) >90)
+		{
+			thing = String.fromCharCode(64 +(thing.charCodeAt(0)-90));
+		}
+		else if (thing.charCodeAt(0) >122)
+		{
+			thing = String.fromCharCode(96 +(thing.charCodeAt(0)-122));
+		}
+		phrase = phrase.replace(phrase.charAt(i), thing);}
 	}
-	else if (counter > 2)
-	{
-		res.write((counter-2).toString());
-		console.log(counter-2);
-	}
-	else
-	{
-		res.write(counter.toString());
-		console.log(counter);	
-	}
-	res.end();
-}).listen(port);
+  optionsArray[k] = phrase;
+  phrase = orig;
+}
+var allStrings = ""
+ for(var i = 0;i <27; i++)
+{
+	allStrings=allStrings+'\n'+optionsArray[i];}
+  res.set('Content-Type', 'text/plain');
+  res.send(allStrings);
+});
+
+app.listen(port);
