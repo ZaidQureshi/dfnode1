@@ -1,4 +1,4 @@
 git add .
 git commit -m 'commit'
-git push ../gpaCalc
+git push -u origin ../gpaCalc
 PAUSE
