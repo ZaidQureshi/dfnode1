@@ -12,6 +12,7 @@ app.get("/", function(req, res) {
     else{ 
       res.contentType("html");
       res.send(data);
+	  
     }
   });      
 });
