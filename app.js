@@ -17,15 +17,21 @@ app.get("/", function(req, res) {
 });
 
 app.get("/myaction", function(req, res) {
-  var phrase = req.param("phrase");
-  var orig = phrase;
+  var orig = req.param("phrase");
+  var phrase = orig;
   var optionsArray = new Array();
-  for( var k = 0; k < 27; k++)
+  
+  
+  for( var k = 0; k < 26; k++)
   {
+   
   for( var i = 0; i < phrase.length; i++)
 	{
-	if((90>=phrase.charCodeAt(i) && phrase.charCodeAt(i)>=65)|| (122>=phrase.charCodeAt(i) && phrase.charCodeAt(i)>=97)) {
-		var thing = String.fromCharCode(parseInt(phrase.charCodeAt(i))+k);
+	if (122>=phrase.charCodeAt(i) && phrase.charCodeAt(i)>=97){
+	phrase = phrase.replace(phrase.charAt(i), String.fromCharCode(phrase.charCodeAt(i)-32));}
+	optionsArray[k] = phrase;
+	if(90>=phrase.charCodeAt(i) && phrase.charCodeAt(i)>=65) {
+		var thing = String.fromCharCode(parseInt(phrase.charCodeAt(i))+1);
 		if (thing.charCodeAt(0) >90)
 		{
 			thing = String.fromCharCode(64 +(thing.charCodeAt(0)-90));
@@ -36,8 +42,7 @@ app.get("/myaction", function(req, res) {
 		}
 		phrase = phrase.replace(phrase.charAt(i), thing);}
 	}
-  optionsArray[k] = phrase;
-  phrase = orig;
+  
 }
 var allStrings = ""
  for(var i = 0;i <27; i++)
